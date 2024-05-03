@@ -3,7 +3,7 @@ import sys
 try:
     x = int(sys.argv[1])
     y = int(sys.argv[2])
-except VAlueError:
+except ValueError:
     print("provide two integers")
     sys.exit(1)
 
