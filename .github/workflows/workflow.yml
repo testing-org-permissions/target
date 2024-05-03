@@ -47,11 +47,8 @@ jobs:
         y: [3, 4]
 
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
       - name: run foo
-        uses: ./.github/workflows/run-foo@v1.0.0
+        uses: testing-org-permissions/github-actions/run-foo@v1.0.0
         with:
           x: ${{ matrix.x }}
           y: ${{ matrix.y }}
@@ -61,7 +58,5 @@ jobs:
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.test_matrix == false }}
 
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
       - name: run foo
-        uses: ./.github/workflows/run-foo@v1.0.0
+        uses: testing-org-permissions/github-actions/run-foo@v1.0.0
