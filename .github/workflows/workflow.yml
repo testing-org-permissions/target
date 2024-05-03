@@ -1,0 +1,67 @@
+name: "trigger foo"
+
+on:
+  repository_dispatch:
+    types: [remote-trigger]
+  workflow_dispatch:
+    inputs:
+      test_matrix:
+        description: 'Test all options in the matrix. If set to false, will only trigger the CI for the default options.'
+        required: true
+        default: false
+        type: boolean
+  push:
+
+jobs:
+  #
+  #  test-defaults:
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #      - name: run foo
+  #        uses: ./.github/workflows/run-foo
+  #
+  #  test-matrix:
+  #    runs-on: ubuntu-latest
+  #    strategy:
+  #      matrix:
+  #        x: [2,3]
+  #        y: [4]
+  #    steps:
+  #      - name: run foo
+  #        uses: ./.github/workflows/run-foo
+  #        with:
+  #          x: ${{ matrix.x }}
+  #          y: ${{ matrix.y }}
+  #
+  #  test-custom:
+  #    runs-on: ubuntu-latest
+  #    # not sure how to complete this section
+  #    inputs:
+  #
+  test-matrix:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' || inputs.test_matrix == true }}
+    strategy:
+      matrix:
+        x: [2]
+        y: [3, 4]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: run foo
+        uses: ./.github/workflows/run-foo@v1.0.0
+        with:
+          x: ${{ matrix.x }}
+          y: ${{ matrix.y }}
+
+  test-defaults:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.test_matrix == false }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: run foo
+        uses: ./.github/workflows/run-foo@v1.0.0
