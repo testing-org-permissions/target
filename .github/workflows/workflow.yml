@@ -48,7 +48,7 @@ jobs:
 
     steps:
       - name: run foo
-        uses: testing-org-permissions/github-actions/run-foo@v1.0.0
+        uses: testing-org-permissions/github-actions/run-foo
         with:
           x: ${{ matrix.x }}
           y: ${{ matrix.y }}
